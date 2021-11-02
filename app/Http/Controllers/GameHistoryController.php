@@ -32,4 +32,10 @@ class GameHistoryController extends Controller
             'round' => $gameHistory->game_round_id,
         ]);
     }
+
+    public function stats(){
+        $winner = GameRound::all();
+        return response()->json($winner);
+    }
+
 }

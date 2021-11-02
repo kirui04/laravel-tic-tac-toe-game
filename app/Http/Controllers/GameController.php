@@ -9,6 +9,7 @@ use App\Services\GameHistoryService;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreGame;
 use App\Http\Requests\UpdateGame;
+use Illuminate\Support\Arr;
 
 class GameController extends Controller
 {
@@ -34,6 +35,13 @@ class GameController extends Controller
         return view('games.index', compact('games'));
     }
 
+    public function stats()
+    {
+        $gameRound = GameRound::all('game_id','winner');
+
+        return response()->json($gameRound);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -54,7 +62,13 @@ class GameController extends Controller
     {
         $game = $this->gameService->create($request->validated());
 
-        return redirect()->route('games.edit', [$game]);
+        return redirect()->route('games.show', [
+            'game' => $game,
+            'token' => $game->token,
+            'round' => $game->gameRoundLatest->id ?? null,
+        ]);
+
+        //return redirect()->route('games.edit', [$game]);
     }
 
     /**
@@ -96,6 +110,11 @@ class GameController extends Controller
         ));
     }
 
+    // public function stats(){
+    //     $gameround = GameRound::all('game_id','winner');
+    //     return response()->json($gameround);
+    // }
+
     /**
      * Show the form for editing the specified resource.
      *
@@ -116,8 +135,11 @@ class GameController extends Controller
      */
     public function update(UpdateGame $request, Game $game)
     {
+        
         $game = $this->gameService->update($game, $request->validated());
-
+        
+        var_dump($game);
+        exit;
         return redirect()->route('games.show', [
             'game' => $game,
             'token' => $game->token,

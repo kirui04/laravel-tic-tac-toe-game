@@ -27,6 +27,11 @@
             {{ Form::text('first_player_name', old('first_player_name'), ['class' => 'form-control'
                 . ($errors->has('first_player_name') ? ' is-invalid' : ''), 'placeholder' => __('Name')]) }}
 
+            {{ Form::label('second_player_name', __('Second player')) }}
+
+            {{ Form::text('second_player_name', old('second_player_name'), ['class' => 'form-control'
+                . ($errors->has('second_player_name') ? ' is-invalid' : ''), 'placeholder' => __('Name')]) }}
+
             @if ($errors->has('first_player_name'))
                 <div class="invalid-feedback">
 

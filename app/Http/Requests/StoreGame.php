@@ -25,6 +25,7 @@ class StoreGame extends FormRequest
     {
         return [
             'first_player_name' => 'required|max:255',
+            'second_player_name' => 'required|max:255',
         ];
     }
 }

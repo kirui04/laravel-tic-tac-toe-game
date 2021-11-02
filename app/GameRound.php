@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @property int $id
  * @property int $game_id
+ * @property string $winner
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Game $game
@@ -32,6 +33,7 @@ class GameRound extends Model
      */
     protected $fillable = [
         'game_id',
+        'winner'
     ];
 
     public function game()

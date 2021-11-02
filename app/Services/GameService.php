@@ -11,7 +11,8 @@ class GameService
     public function create(array $data): Game
     {
         $game = Game::make(Arr::only($data, [
-            'first_player_name'
+            'first_player_name',
+            'second_player_name'
         ]));
 
         $game->setToken();
@@ -27,10 +28,12 @@ class GameService
 
     public function update(Game $game, array $data): Game
     {
+      
         $game->update(Arr::only($data, [
             'second_player_name',
         ]));
-
+         //$game->second_player_name = $data['second_player_name'];
+         //$game->save();
         return $game;
     }
 

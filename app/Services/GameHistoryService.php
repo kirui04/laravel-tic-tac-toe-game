@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Game;
+use App\GameRound;
 use App\GameHistory;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Arr;
@@ -77,6 +78,14 @@ class GameHistoryService
         $gameOver = $this->isGameOver($gameSize, $horizontalSuccess, $verticalSuccess, $diagonalRightSuccess, $diagonalLeftSuccess);
 
         $playerWinner = $this->getPlayerWinner($gameSize, $gameHistories, $horizontalSuccess, $verticalSuccess, $diagonalRightSuccess, $diagonalLeftSuccess);
+
+        //if($gameOver){
+            $round = GameRound::find($roundId);
+            //$round->winner = $playerWinner;
+            //var_dump($round);die();
+            $pw = $playerWinner == 1 ? "Player1" : ($playerWinner == 2 ? "Player2" : "Draw");
+            $round->update(['winner' => $pw]);
+        //}
 
         return compact(
             'playerType',

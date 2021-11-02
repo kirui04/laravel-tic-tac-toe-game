@@ -63,72 +63,103 @@
     @endif
 
     <div class="ttt-content mt-3">
+    <style>
+    @media (max-width: 768px) {
+        #hidemobile {
+            display: none;
+        }
+    }
+</style>
+        <div class="row">
+            <div id="hidemobile" class="col-md-4 col-sm-12" style="background-color: ;">
+                STATISTICS 
+                    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css">
+                    <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.18.0/dist/bootstrap-table.min.css">
 
-        @for ($row = 1; $row <= $gameSize; $row++)
-            <div class="d-flex justify-content-center ttt-row">
+                    <div class="container">
+                    <table id="table" data-toggle="table" data-flat="true" data-url="http://localhost:8000/games/stats">
+                        <thead>
+                        <tr>
+                            <th data-field="game_id" data-sortable="true">Game id</th>
+                            <th data-field="winner" data-sortable="true">Winner</th>
+                        </tr>
+                        </thead>
+                    </table>
+                    </div>
 
-                @for ($col = 1; $col <= $gameSize; $col++)
-                    <div class="align-self-center ttt-col">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+                    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+                    <script src="https://unpkg.com/bootstrap-table@1.18.0/dist/bootstrap-table.min.js"></script> 
+            </div>
+            <div class="col-md-8 col-sm-12" style="background-color: ;">
+                @for ($row = 1; $row <= $gameSize; $row++)
+                    <div class="d-flex justify-content-center ttt-row">
 
-                        @if (isset($prepareData['gameHistories'][$row][$col]))
+                        @for ($col = 1; $col <= $gameSize; $col++)
+                            <div class="align-self-center ttt-col">
 
-                            <div class="ttt-element">
+                                @if (isset($prepareData['gameHistories'][$row][$col]))
 
-                                @if ($prepareData['horizontalSuccess'][$row] ?? null)
-                                    <div class="line"></div>
+                                    <div class="ttt-element">
 
-                                @elseif($prepareData['verticalSuccess'][$col] ?? null)
-                                    <div class="line rotate-90"></div>
+                                        @if ($prepareData['horizontalSuccess'][$row] ?? null)
+                                            <div class="line"></div>
 
-                                @elseif ($prepareData['diagonalRightSuccess'][$row][$col] ?? null)
-                                    <div class="line rotate-135"></div>
+                                        @elseif($prepareData['verticalSuccess'][$col] ?? null)
+                                            <div class="line rotate-90"></div>
 
-                                @elseif ($prepareData['diagonalLeftSuccess'][$row][$col] ?? null)
-                                    <div class="line rotate-45"></div>
+                                        @elseif ($prepareData['diagonalRightSuccess'][$row][$col] ?? null)
+                                            <div class="line rotate-135"></div>
+
+                                        @elseif ($prepareData['diagonalLeftSuccess'][$row][$col] ?? null)
+                                            <div class="line rotate-45"></div>
+                                        @endif
+
+                                        {{  $game::getPlayerTypes($prepareData['gameHistories'][$row][$col]) }}
+
+                                    </div>
+
+                                @else
+
+                                    <div class="ttt-element">
+
+                                        @if (! $prepareData['gameOver'])
+
+                                            {!! Form::open(['route' => 'gameHistories.store', 'method' => 'post']) !!}
+                                            {!! Form::hidden('game_id', $game->id) !!}
+                                            {!! Form::hidden('game_round_id', $round) !!}
+                                            {!! Form::hidden('game_row', $row) !!}
+                                            {!! Form::hidden('game_column', $col) !!}
+
+                                            @if (! $prepareData['playerType'])
+                                                {!! Form::hidden('player_type', $firstPlayerType) !!}
+                                            @endif
+
+                                            @if ($prepareData['playerType'] && $prepareData['playerType'] === $firstPlayerType)
+                                                {!! Form::hidden('player_type', $secondPlayerType) !!}
+                                            @endif
+
+                                            @if ($prepareData['playerType'] && $prepareData['playerType'] === $secondPlayerType)
+                                                {!! Form::hidden('player_type', $firstPlayerType) !!}
+                                            @endif
+
+                                            {!! Form::submit('', ['class' => 'btn btn-link btn-block']) !!}
+                                            {!! Form::close() !!}
+
+                                        @endif
+
+                                    </div>
+
                                 @endif
 
-                                {{  $game::getPlayerTypes($prepareData['gameHistories'][$row][$col]) }}
-
                             </div>
-
-                        @else
-
-                            <div class="ttt-element">
-
-                                @if (! $prepareData['gameOver'])
-
-                                    {!! Form::open(['route' => 'gameHistories.store', 'method' => 'post']) !!}
-                                    {!! Form::hidden('game_id', $game->id) !!}
-                                    {!! Form::hidden('game_round_id', $round) !!}
-                                    {!! Form::hidden('game_row', $row) !!}
-                                    {!! Form::hidden('game_column', $col) !!}
-
-                                    @if (! $prepareData['playerType'])
-                                        {!! Form::hidden('player_type', $firstPlayerType) !!}
-                                    @endif
-
-                                    @if ($prepareData['playerType'] && $prepareData['playerType'] === $firstPlayerType)
-                                        {!! Form::hidden('player_type', $secondPlayerType) !!}
-                                    @endif
-
-                                    @if ($prepareData['playerType'] && $prepareData['playerType'] === $secondPlayerType)
-                                        {!! Form::hidden('player_type', $firstPlayerType) !!}
-                                    @endif
-
-                                    {!! Form::submit('', ['class' => 'btn btn-link btn-block']) !!}
-                                    {!! Form::close() !!}
-
-                                @endif
-
-                            </div>
-
-                        @endif
+                        @endfor
 
                     </div>
                 @endfor
-
             </div>
-        @endfor
+        </div>
 
     </div>
 

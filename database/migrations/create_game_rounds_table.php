@@ -18,6 +18,8 @@ class CreateGameRoundsTable extends Migration
 
             $table->unsignedBigInteger('game_id');
 
+            $table->string('winner';)
+
             $table->foreign('game_id')->references('id')->on('games')
                 ->onUpdate('CASCADE')
                 ->onDelete('CASCADE');

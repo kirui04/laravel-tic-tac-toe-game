@@ -14,6 +14,9 @@
 Route::get('/', 'WelcomeController@index')
     ->name('welcome');
 
+Route::get('games/stats', 'GameController@stats')
+    ->name('stats');
+
 Route::resource('games', 'GameController')->except(['destroy']);
 
 Route::post('game-histories', 'GameHistoryController@store')
