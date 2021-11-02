@@ -72,7 +72,7 @@
 </style>
         <div class="row">
             <div id="hidemobile" class="col-md-4 col-sm-12" style="background-color: ;">
-                STATISTICS 
+                RESULTS OF LAST FIVE MATCHES 
                     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css">
                     <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.18.0/dist/bootstrap-table.min.css">
 

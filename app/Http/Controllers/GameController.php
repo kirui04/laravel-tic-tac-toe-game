@@ -37,7 +37,8 @@ class GameController extends Controller
 
     public function stats()
     {
-        $gameRound = GameRound::all('game_id','winner');
+        //$gameRound = GameRound::all('game_id','winner')->take(5);
+        $gameRound = GameRound::orderBy('id', 'desc')->take(5)->get();
 
         return response()->json($gameRound);
     }
